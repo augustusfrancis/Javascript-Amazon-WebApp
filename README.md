@@ -4,9 +4,7 @@ A fully functional front-end Amazon-style e-commerce web application built with 
 
 ## 🔗 Live Demo
 
-[View Live Demo](https://your-username.github.io/javascript-amazon-project-main/)
-
-> Replace the above link with your actual GitHub Pages URL after deployment.
+View Live Demo: https://augustusfrancis.github.io/Javascript-Amazon-WebApp/
 
 ## 📝 Description
 
