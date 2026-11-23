@@ -154,3 +154,7 @@
   padding: 8px;
   border-radius: 50px;
 }
+
+.add-to-cart{
+  opacity: 1 !important;  /*so that above css opacity property will not overrides this */
+}
