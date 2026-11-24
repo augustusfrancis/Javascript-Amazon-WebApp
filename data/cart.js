@@ -43,7 +43,8 @@ export function addToCart (productId) {
     } else {
         cart.push({
             productId, // productId: productId,
-            quantity //quantity: quantity
+            quantity, //quantity: quantity
+            deliveryOptionId: '1'
         });
     }
 
@@ -61,6 +62,20 @@ export function removeFromCart (productId) {
     });
 
     cart = newCart;
+
+    saveToStorage();
+}
+
+export function updateDeliveryOption(productId, deliveryOptionId) {
+    let matchingItem;
+
+    cart.forEach((cartItem) => {
+        if (productId === cartItem.productId) {
+            matchingItem = cartItem;
+        }
+    });
+
+    matchingItem.deliveryOptionId = deliveryOptionId;
 
     saveToStorage();
 }
