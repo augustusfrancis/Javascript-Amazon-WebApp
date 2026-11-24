@@ -1,4 +1,4 @@
-import {cart, addToCart} from '../data/cart.js'; // import * as cartModule from '../data/cart.js'; to get all. call it using cartModule.addToCart();
+import {cart, addToCart, calculateCartQuantity} from '../data/cart.js'; // import * as cartModule from '../data/cart.js'; to get all. call it using cartModule.addToCart();
 import {products} from '../data/products.js';
 import { formatCurrency } from './utils/money.js'; 
 
@@ -59,13 +59,13 @@ products.forEach((product) => {
 document.querySelector('.js-product-grid').innerHTML = productsHTML;
 
 function updateCartQuantity () {
-    let cartQuantity = 0;
-    cart.forEach((cartItem) =>{
-        cartQuantity += cartItem.quantity;
-    });
+    
+    const cartQuantity = calculateCartQuantity(cart);
 
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
 }
+
+updateCartQuantity();
 
 // Object to store timeout IDs for each product
 const addedMessageTimeouts = {};

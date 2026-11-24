@@ -2,7 +2,15 @@ export let cart = JSON.parse(localStorage.getItem('cart'));
 if (!cart) {
     cart = [];
 
-} 
+}
+
+export function calculateCartQuantity(cart) {
+    let cartQuantity = 0;
+    cart.forEach((cartItem) =>{
+        cartQuantity += cartItem.quantity;
+    });
+    return cartQuantity;
+}
 
 function saveToStorage () {
     localStorage.setItem('cart', JSON.stringify(cart));
