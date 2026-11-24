@@ -16,6 +16,16 @@ function saveToStorage () {
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
+export function updateQuantity(productId, newQuantity) {
+    cart.forEach((cartItem) => {
+        if (cartItem.productId === productId) {
+            cartItem.quantity = newQuantity; // ← Actually changes the cart
+        }
+    });
+
+    saveToStorage(); // Save the updated cart to localStorage
+}
+
 export function addToCart (productId) {
     let matchingItem;
 

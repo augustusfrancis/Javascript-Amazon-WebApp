@@ -1,4 +1,4 @@
-import {cart, removeFromCart, calculateCartQuantity} from '../data/cart.js';
+import {cart, removeFromCart, calculateCartQuantity, updateQuantity} from '../data/cart.js';
 import {products} from '../data/products.js';
 import { formatCurrency } from './utils/money.js'; 
 
@@ -37,9 +37,11 @@ cart.forEach((cartItem) => {
                 <span>
                 Quantity: <span class="quantity-label">${cartItem.quantity}</span>
                 </span>
-                <span class="update-quantity-link link-primary">
+                <span class="update-quantity-link link-primary js-update-link" data-product-id="${matchingProduct.id}">
                 Update
                 </span>
+                <input class="quantity-input js-quantity-input" data-product-id="${matchingProduct.id}">
+                <span class="save-quantity-link link-primary js-save-link" data-product-id="${matchingProduct.id}">Save</span>
                 <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
                 Delete
                 </span>
@@ -117,5 +119,60 @@ document.querySelectorAll('.js-delete-link').forEach((link) => {
         container.remove();
 
         updateCartQuantity();
-    })
-})
+    });
+});
+
+document.querySelectorAll('.js-update-link').forEach((link) => {
+    link.addEventListener('click', () => {
+        const productId = link.dataset.productId;
+
+        // Find the container for this product
+        const container = document.querySelector(`.js-cart-item-container-${productId}`);
+
+        // Add the class to show input and Save link
+        container.classList.add('is-editing-quantity');
+    });
+});
+
+// Define the save function (reusable)
+function saveQuantity(productId) {
+    const container = document.querySelector(`.js-cart-item-container-${productId}`);
+    const quantityInput = container.querySelector(`.js-quantity-input`);
+    const newQuantity = Number(quantityInput.value);
+
+    // Validation
+    if (newQuantity < 0 || newQuantity > 100 || !Number.isInteger(newQuantity)) {
+        alert('Please enter a valid whole number between 0 and 99');
+        return;
+    }
+
+    updateQuantity(productId, newQuantity);
+
+    // Update the displayed quantity label
+    const quantityLabel = container.querySelector('.quantity-label');
+    quantityLabel.innerHTML = newQuantity;
+
+    // Update the header cart count
+    updateCartQuantity();
+
+    // Remove the class to hide input and Save link
+    container.classList.remove('is-editing-quantity');
+}
+
+// Save button click handler
+document.querySelectorAll('.js-save-link').forEach((link) => {
+    link.addEventListener('click', () => {
+        saveQuantity(link.dataset.productId);
+    });
+});
+
+// Enter key handler
+document.querySelectorAll('.js-quantity-input').forEach((input) => {
+    input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            saveQuantity(input.dataset.productId);
+        }
+    });
+});
+
+
