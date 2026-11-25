@@ -4,6 +4,7 @@ import { formatCurrency } from '../utils/money.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js'
 import { renderPaymentSummary } from './paymentSummary.js';
+import { renderCheckoutHeader } from './checkoutHeader.js';
 
 
 export function renderOrderSummary() {
@@ -106,16 +107,9 @@ export function renderOrderSummary() {
         return html;
     }
 
-    function updateCartQuantity () {
-        
-        const cartQuantity = calculateCartQuantity(cart);
-
-        document.querySelector('.js-return-to-home-link').innerHTML = `${cartQuantity}  ${cartQuantity === 1 ? 'item' : 'items'}`; // for better grammar
-    }
-
     document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
 
-    updateCartQuantity();
+    renderCheckoutHeader();
 
     document.querySelectorAll('.js-delete-link').forEach((link) => {
         link.addEventListener('click', () => {
@@ -123,10 +117,7 @@ export function renderOrderSummary() {
 
             removeFromCart(productId);
 
-            const container = document.querySelector(`.js-cart-item-container-${productId}`);
-            container.remove();
-
-            updateCartQuantity();
+            renderOrderSummary();
 
             renderPaymentSummary();
         });
@@ -159,15 +150,7 @@ export function renderOrderSummary() {
 
         updateQuantity(productId, newQuantity);
 
-        // Update the displayed quantity label
-        const quantityLabel = container.querySelector('.quantity-label');
-        quantityLabel.innerHTML = newQuantity;
-
-        // Update the header cart count
-        updateCartQuantity();
-
-        // Remove the class to hide input and Save link
-        container.classList.remove('is-editing-quantity');
+        renderOrderSummary();
     }
 
     // Save button click handler
@@ -183,8 +166,8 @@ export function renderOrderSummary() {
         input.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
                 saveQuantity(input.dataset.productId);
+                renderPaymentSummary();
             }
-            renderPaymentSummary();
         });
     });
 
