@@ -56,9 +56,10 @@ class Clothing extends Product { // child class
   }
 }
 
-
-
-
+/* example of a built in class
+const date = new Date();
+console.log(date.toLocaleTimeString()); 
+*/
 
 export const products = [
   {
