@@ -1,21 +1,22 @@
 class Cart {  // creating a new class
     cartItems;
-    localStorageKey;
+    #localStorageKey; // # makes it private as it can only be accessed inside the class not outside
 
     constructor(localStorageKey) {  // constructors have to be named a constructure and it does not return anything
-        this.localStorageKey = localStorageKey;
-        this.loadFromStorage();
+        this.#localStorageKey = localStorageKey;
+        this.#loadFromStorage();
     }
 
-    loadFromStorage () { // or loadFromStorage: function () {}
-        this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey));
+    // private method by adding # infront
+    #loadFromStorage () { // or loadFromStorage: function () {}
+        this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
         if (!this.cartItems) {
         this.cartItems = [];
         }
     }
 
     saveToStorage() {
-        localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems));
+        localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems));
     }
 
     addToCart (productId) {
